@@ -5,13 +5,11 @@ _Monitor Printer;
 _Task NameServer;
 _Task WATCardOffice;
 _Task Truck;
-enum VendingMachine::Flavour;
 
 _Task BottlingPlant {
 	Truck *truck;
-    Printer* prt;
-    NameServer* ns;
-    uCondition waiting;
+    Printer& prt;
+    NameServer& ns;
     unsigned int* shippment;
     unsigned int numVendingMachines, maxShippedPerFlavour,
                  maxStockPerFlavour, timeBetweenShipments;

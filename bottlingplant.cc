@@ -12,7 +12,7 @@
  */
 BottlingPlant::BottlingPlant( Printer &prt, NameServer &nameServer, unsigned int numVendingMachines,
                  unsigned int maxShippedPerFlavour, unsigned int maxStockPerFlavour,
-                 unsigned int timeBetweenShipments ) : prt(&prt), ns(&ns), 
+                 unsigned int timeBetweenShipments ) : prt(prt), ns(ns), closed(false),
                  numVendingMachines(numVendingMachines), maxShippedPerFlavour(maxShippedPerFlavour),
                  maxStockPerFlavour(maxStockPerFlavour), timeBetweenShipments(timeBetweenShipments),
                  shippment(new unsigned int[maxNumFlavours]) {
@@ -23,6 +23,7 @@ BottlingPlant::BottlingPlant( Printer &prt, NameServer &nameServer, unsigned int
  * Destructor
  */
 BootlingPlant::~BottlingPlant() { 
+	closed = true;
 	delete[] shippment;
 	delete truck;
 }
@@ -34,11 +35,9 @@ BootlingPlant::~BottlingPlant() {
  * down and cargo is not changed, and false otherwise
  */
 bool BottlingPlant::getShipment( unsigned int cargo[] ) { 
-	// if closing down, return false
-	if ( false ) return false;
+	if ( closed ) return true;
 	std::copy(std::begin(shippment), std::end(shippment), std::begin(cargo));
-	waiting.signal();
-	return true;
+	return false;
 }
 
 /**
@@ -46,13 +45,14 @@ bool BottlingPlant::getShipment( unsigned int cargo[] ) {
  */ 
 void BottlingPlant::main() {
 	truck = new Truck(prt, nameServer, this, numVendingMachines, maxStockPerFlavour);
-
 	for ( ;; ) {
 		for( int i = 0; i < maxNumFlavours; i++ ) {
 			shippment[i] = RNG(0, maxShippedPerFlavour);
 		}	
 		yield(timeBetweenShipments);
-		waiting.wait();
-		// need to figure out whe to close to plant
+
+		_Accept(~Table) {
+			break;
+		} or _Accept(getShipment) {}
 	}
 }
