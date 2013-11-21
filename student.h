@@ -2,12 +2,10 @@
 #define __STUDENT_H__
 
 #include <uC++.h>
-#include "watcard.h"
 
 _Monitor Printer;
 _Task NameServer;
 _Task WATCardOffice;
-enum VendingMachine::Flavour;
 
 _Task Student {
     void main();
