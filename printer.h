@@ -4,6 +4,7 @@
 #include <uC++.h>
 
 _Monitor Printer {
+	unsigned int numStudents, numVendingMachines, numCouriers;
   public:
     enum Kind { Parent, WATCardOffice, NameServer, Truck, BottlingPlant, Student, Vending, Courier };
     Printer( unsigned int numStudents, unsigned int numVendingMachines, unsigned int numCouriers );
