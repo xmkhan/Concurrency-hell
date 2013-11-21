@@ -26,6 +26,7 @@ BootlingPlant::~BottlingPlant() {
 	closed = true;
 	delete[] shippment;
 	delete truck;
+	prt.print(Printer::BottlingPlant, Finished);
 }
 
 /**
@@ -45,7 +46,9 @@ bool BottlingPlant::getShipment( unsigned int cargo[] ) {
  */ 
 void BottlingPlant::main() {
 	truck = new Truck(prt, nameServer, this, numVendingMachines, maxStockPerFlavour);
+	prt.print(Printer::BottlingPlant, Starting);
 	for ( ;; ) {
+		prt.print(Printer::BottlingPlant, GeneratingSoda);
 		for( int i = 0; i < maxNumFlavours; i++ ) {
 			shippment[i] = RNG(0, maxShippedPerFlavour);
 		}	
@@ -53,6 +56,8 @@ void BottlingPlant::main() {
 
 		_Accept(~Table) {
 			break;
-		} or _Accept(getShipment) {}
+		} or _Accept(getShipment) {
+			prt.print(Printer::BottlingPlant, ShipmentPickedUp);
+		}
 	}
 }

@@ -15,7 +15,7 @@ _Task BottlingPlant {
                  maxStockPerFlavour, timeBetweenShipments;
 
     const unsigned int numOfFlavours = 4;
-
+    enum States = { Starting = "S", GeneratingSoda = "G", ShipmentPickedUp = "P", Finished = "F" };
     void main();
   public:
     BottlingPlant( Printer &prt, NameServer &nameServer, unsigned int numVendingMachines,
