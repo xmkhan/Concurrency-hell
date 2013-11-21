@@ -18,13 +18,13 @@ numColumns(numStudents+numVendingMachines+numCouriers+numOthers), states(new Sta
 	for (unsigned int i = 0; i < numStudents; i++)        cout << "Stud" << i << "\t";
 	for (unsigned int i = 0; i < numVendingMachines; i++) cout << "Mach" << i << "\t";
 	for (unsigned int i = 0; i < numCouriers-1; i++)      cout << "Cour" << i << "\t";
-	cout << "\t" << endl;
+	cout << "Cour" << numCouriers << endl;
 
     // Print underlining name row
 	for (unsigned int i = 0; i < numColumns-1; i++) {
 		cout << "******\t";
 	}
-	cout << endl;	
+	cout << <<"******\n";
 	flush();
 }
 
