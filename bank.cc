@@ -7,7 +7,7 @@
 Bank::Bank( unsigned int numStudents )
 : waiting(new uCondition[numStudents]),
   bank(new unsigned int[numStudents]),
-  queues(new std::queue<unsigned int>[numStudents]),
+  withdrawRequest(new std::queue<unsigned int>[numStudents]),
   numStudents(numStudents) {
     for (unsigned int i = 0; i < numStudents; i++) bank[i] = 0;
   }
@@ -18,7 +18,7 @@ Bank::Bank( unsigned int numStudents )
 Bank::~Bank() {
   delete[] waiting;
   delete[] bank;
-  delete[] queues;
+  delete[] withdrawRequest;
 }
 
 /**
@@ -30,9 +30,9 @@ Bank::~Bank() {
 void Bank::deposit( unsigned int id, unsigned int amount ) {
   bank[id] += amount;
   // Unblock all withdraw requests as long as student has enough money
-  // queues[id] represents the funds requested for that particular student
-  while (!queues[id].empty() && queues[id].front() <= bank[id]) {
-    queues.pop();
+  // withdrawRequest[id] represents the funds requested for that particular student
+  while (!withdrawRequest[id].empty() && withdrawRequest[id].front() <= bank[id]) {
+    withdrawRequest[id].pop();
     bank[id] -= amount;
     waiting[id].signal();
   }
@@ -46,7 +46,7 @@ void Bank::deposit( unsigned int id, unsigned int amount ) {
  */
 void Bank::withdraw( unsigned int id, unsigned int amount ) {
   if (bank[id] < amount) {
-    queues[id].push(amount);
+    withdrawRequest[id].push(amount);
     waiting[id].wait();
   } else {
     bank[id] -= amount;

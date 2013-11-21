@@ -14,7 +14,7 @@ _Monitor Bank {
   private:
     uCondition *waiting;
     unsigned int *bank; // holds bank accounts for students
-    std::queue<unsigned int> *queues; // queue of funds demanded for students
+    std::queue<unsigned int> *withdrawRequest; // queue of funds demanded for students
     unsigned int numStudents;
 };
 
