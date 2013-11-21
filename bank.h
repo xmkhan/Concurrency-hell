@@ -13,8 +13,8 @@ _Monitor Bank {
     void withdraw( unsigned int id, unsigned int amount );
   private:
     uCondition *waiting;
-    unsigned int *bank;
-    std::queue<unsigned int> *queues;
+    unsigned int *bank; // holds bank accounts for students
+    std::queue<unsigned int> *queues; // queue of funds demanded for students
     unsigned int numStudents;
 };
 
