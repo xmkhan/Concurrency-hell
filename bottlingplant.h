@@ -1,7 +1,21 @@
 #ifndef __BOTTLINGPLANT_H__
 #define __BOTTLINGPLANT_H__
 
+_Monitor Printer;
+_Task NameServer;
+_Task WATCardOffice;
+_Task Truck;
+
 _Task BottlingPlant {
+	Truck *truck;
+    Printer& prt;
+    NameServer& ns;
+    unsigned int* shippment;
+    unsigned int numVendingMachines, maxShippedPerFlavour,
+                 maxStockPerFlavour, timeBetweenShipments;
+
+    const unsigned int numOfFlavours = 4;
+    enum States = { Starting = "S", GeneratingSoda = "G", ShipmentPickedUp = "P", Finished = "F" };
     void main();
   public:
     BottlingPlant( Printer &prt, NameServer &nameServer, unsigned int numVendingMachines,
