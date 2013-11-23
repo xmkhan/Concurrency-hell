@@ -3,6 +3,7 @@
 #include "vendingmachine.h"
 #include "printer.h"
 #include "nameserver.h"
+#include "MPRNG.h"
 
 /**
  * Responsible for distributing soda among 
@@ -14,7 +15,7 @@ void Truck::main() {
 	prt.print(Printer::Truck, Starting);
 	for( ;; ) {
 	    machineList = ns.getMachineList();
-	    yiled(RNG(1, 10));
+	    yield(RNG(1, 10));
 	    closing = plant.getShipment(cargo);
 
 	    // if plant is closed, break out of the loop
@@ -27,8 +28,8 @@ void Truck::main() {
 
 	    // process vending machines in order
 	    // break out of loop if truck runs out of soda
-	    for ( int i = 0; i < numVendingMachines; i++ ) {	    	
-	        if (!processVendingMachine(i) break;	
+	    for ( unsigned int i = 0; i < numVendingMachines; i++ ) {	    	
+	        if (!restockVendingMachine(i)) break;	
 	    } 
    	}
 }
@@ -40,9 +41,9 @@ void Truck::main() {
  */
 bool Truck::restockVendingMachine( unsigned int index ) {
 	prt.print(Printer::Truck, (char)Deliver, 
-		machineList[index]->getId, curCargoSize);
+		machineList[index]->getId(), curCargoSize);
 	
-	inventory = machineList[i]->inventory();
+	inventory = machineList[index]->inventory();
 
 	// restock each flavour 
 	for ( int j = 0; j < numFlavours; j++ ) {
@@ -108,8 +109,8 @@ void Truck::restockFlavour ( unsigned int flavour ) {
 Truck::Truck( Printer &prt, NameServer &nameServer, BottlingPlant &plant,
        unsigned int numVendingMachines, unsigned int maxStockPerFlavour ):
        prt(prt), ns(nameServer), plant(plant), numVendingMachines(numVendingMachines),
-       maxStockPerFlavour(maxStockPerFlavour), cargo(new unsigned int[numFlavours]),
-       addToVM(0), outOfFlavour(0), curCargoSize(0), totalNotReplenished(0) {	
+       maxStockPerFlavour(maxStockPerFlavour), addToVM(0), outOfFlavour(0), 
+       totalNotReplenished(0), curCargoSize(0), cargo(new unsigned int[numFlavours]) {	
 }
 
 /**

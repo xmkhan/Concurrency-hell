@@ -10,18 +10,20 @@ _Task BottlingPlant {
 	Truck *truck;
     Printer& prt;
     NameServer& ns;
-    unsigned int* shippment;
+    bool closed;
     unsigned int numVendingMachines, maxShippedPerFlavour,
                  maxStockPerFlavour, timeBetweenShipments;
+    unsigned int* shippment;                 
 
-    const unsigned int numOfFlavours = 4;
-    enum States = { Starting = "S", GeneratingSoda = "G", ShipmentPickedUp = "P", Finished = "F" };
+    enum States { Starting = 'S', GeneratingSoda = 'G', ShipmentPickedUp = 'P', Finished = 'F' };
     void main();
   public:
     BottlingPlant( Printer &prt, NameServer &nameServer, unsigned int numVendingMachines,
                  unsigned int maxShippedPerFlavour, unsigned int maxStockPerFlavour,
                  unsigned int timeBetweenShipments );
     bool getShipment( unsigned int cargo[] );
+
+    ~BottlingPlant();
 };
 
 #endif

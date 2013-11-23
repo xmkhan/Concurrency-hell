@@ -2,7 +2,6 @@
 #define __NAMESERVER_H__
 
 #include <uC++.h>
-#include "vendingmachine.h"
 
 _Monitor Printer;
 _Task VendingMachine;
@@ -15,8 +14,8 @@ _Task NameServer {
 	unsigned int sIndex, vmIndex;
 	uCondition waiting;
 
-	enum States = { Starting = "S", RegisterVendingMachine = "R", 
-	                NewVendingMachine = "N", Finished = "F" };
+	enum States { Starting = 'S', RegisterVendingMachine = 'R', 
+	              NewVendingMachine = 'N', Finished = 'F' };
 
     void main();
     
@@ -25,6 +24,7 @@ _Task NameServer {
     void VMregister( VendingMachine *vendingmachine );
     VendingMachine *getMachine( unsigned int id );
     VendingMachine **getMachineList();
+    ~NameServer();
 };
 
 #endif

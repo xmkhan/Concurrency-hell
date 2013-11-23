@@ -30,7 +30,7 @@ void VendingMachine::main() {
  */
 VendingMachine::VendingMachine( Printer &prt, NameServer &nameServer, unsigned int id, unsigned int sodaCost,
                     unsigned int maxStockPerFlavour ):prt(prt), ns(nameServer), id(id), sodaCost(sodaCost), 
-                    maxStockPerFlavour(maxStockPerFlavour), inventory(new unsigned int[numFlavours]) {}
+                    maxStockPerFlavour(maxStockPerFlavour), inventoryList(new unsigned int[numFlavours]) {}
 
 
 /**
@@ -39,12 +39,12 @@ VendingMachine::VendingMachine( Printer &prt, NameServer &nameServer, unsigned i
  * @param card the card of the student making the purchase
  * @return the status of the purchase
  */
-Status VendingMachine::buy( Flavour flavour, WATCard &card ) {
-	if ( inventory[flavour] == 0 ) return STOCK;
+VendingMachine::Status VendingMachine::buy( VendingMachine::Flavours flavour, WATCard &card ) {
+	if ( inventoryList[flavour] == 0 ) return STOCK;
 	if ( card.getBalance() < sodaCost ) return FUNDS;
 	card.deposit(sodaCost);
-	inventory[flavour]--;
-	prt.print(Printer::Vending, (char)StudentPurchase, (char*)flavour, inventory[flavour]);
+	inventoryList[flavour]--;
+	prt.print(Printer::Vending, (char)StudentPurchase, flavour, inventoryList[flavour]);
 	return BUY;
 }
 
@@ -53,7 +53,7 @@ Status VendingMachine::buy( Flavour flavour, WATCard &card ) {
  */
 unsigned int* VendingMachine::inventory() {
 	prt.print(Printer::Vending, (char)Restocking);
-	return inventory;
+	return inventoryList;
 }
 
 /**
@@ -74,4 +74,4 @@ _Nomutex unsigned int VendingMachine::getId() { return id; }
 /**
  * Destructor
  */
-VendingMachine::~VendingMachine() { delete[] inventory; }
+VendingMachine::~VendingMachine() { delete[] inventoryList; }
