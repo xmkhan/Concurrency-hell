@@ -1,4 +1,7 @@
 #include "printer.h"
+#include <iostream>
+
+#define NUM_OTHERS 5
 
 using namespace std;
 
@@ -8,9 +11,12 @@ using namespace std;
  * @param numVendingMachines  Number of vending machines
  * @param numCouriers         Number of couriers
  */
-Printer::Printer( unsigned int numStudents, unsigned int numVendingMachines, unsigned int numCouriers ):
-numStudents(numStudents), numVendingMachines(numVendingMachines), numCouriers(numCouriers), 
-numColumns(numStudents+numVendingMachines+numCouriers+numOthers), states(new StateNode[numColumns]) {
+Printer::Printer( unsigned int numStudents, unsigned int numVendingMachines, unsigned int numCouriers )
+: numStudents(numStudents),
+  numVendingMachines(numVendingMachines),
+  numCouriers(numCouriers),
+  numColumns(numStudents + numVendingMachines + numCouriers + NUM_OTHERS),
+  states(new StateNode[numColumns]) {
 	// Print the name of single instance tasks
 	cout << "Parent\tWATOFF\tNames\tTruck\tPlant\t";
 
@@ -24,7 +30,7 @@ numColumns(numStudents+numVendingMachines+numCouriers+numOthers), states(new Sta
 	for (unsigned int i = 0; i < numColumns-1; i++) {
 		cout << "******\t";
 	}
-	cout << <<"******\n";
+	cout << "******\n";
 	flush();
 }
 
@@ -44,7 +50,7 @@ void Printer::print( Kind kind, char state ) {
  * @param value1 first value of the state
  */
 void Printer::print( Kind kind, char state, int value1 ) {
-	print(kind, 0, state, value1, -1)
+	print(kind, 0, state, value1, -1);
 }
 
 /**
@@ -90,12 +96,12 @@ void Printer::print( Kind kind, unsigned int lid, char state, int value1 ) {
 void Printer::print( Kind kind, unsigned int lid, char state, int value1, int value2 ) {
 	unsigned int index = getStateIndex(kind, lid);
 	bool isOverriden = (states[index].isUsed) ? true : false;
-	
-	if (isOverriden || state == Philosopher::Finished) {
+
+	if (isOverriden || state == 'F') {
 		output();
 		flush();
 	}
-	if (state == Philosopher::Finished) {
+	if (state == 'F') {
 		outputFinish(index);
 	} else {
 		states[index].isUsed = true;
@@ -120,29 +126,30 @@ unsigned int Printer::getStateIndex( Kind kind, unsigned int lid ) {
 		case BottlingPlant: index += 1;
 		case Truck:         index += 1;
 		case NameServer:    index += 1;
-		case WATCardOffice: index += 1; 
+		case WATCardOffice: index += 1;
+    case Parent:        index += 1;
 	}
 	return index + lid;
 }
- 
+
 /**
  * Destructor
  */
-Printer::~Printer() { 
+Printer::~Printer() {
 	delete states;
 	cout << "***********************" << endl;
 }
 
 /**
  * Output the current state of each task
- */ 
+ */
 void Printer::output() {
   // find last valid state to prevent printing out tabs
   int lastIndex = -1;
   for (unsigned int i = 0; i < numColumns; i++) {
     if (states[i].isUsed) lastIndex = i;
   }
- 
+
   for (unsigned int i = 0; i < numColumns; i++) {
     if (states[i].isUsed) {
       cout << (char)states[i].state; // output state
@@ -154,11 +161,11 @@ void Printer::output() {
       cout << endl;
       break;
     }
-    if (i < numColumns - 1) cout << "\t";    
+    if (i < numColumns - 1) cout << "\t";
   }
   cout << endl;
 }
- 
+
 /**
  * Outputs the finish row (with all ..., except for id)
  * @param id identifier of the finished task
@@ -171,7 +178,7 @@ void Printer::outputFinish(unsigned int id) {
   }
   cout << endl;
 }
- 
+
 /**
  * [Printer::flush clears the states buffer]
  */
