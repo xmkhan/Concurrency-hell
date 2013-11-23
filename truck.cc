@@ -67,7 +67,8 @@ bool Truck::restockVendingMachine( unsigned int index ) {
 	totalNotReplenished = 0;
 	outOfFlavour = 0;
 
-   	return true;
+	machineList[index]->restocked();
+  return true;
 }
 
 /**
@@ -119,4 +120,5 @@ Truck::Truck( Printer &prt, NameServer &nameServer, BottlingPlant &plant,
 Truck::~Truck() {
 	delete[] cargo;
 	prt.print(Printer::Truck, (char)Finished);
+
 }

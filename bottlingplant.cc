@@ -27,6 +27,7 @@ BottlingPlant::BottlingPlant( Printer &prt, NameServer &nameServer, unsigned int
 BottlingPlant::~BottlingPlant() {
 	closed = true;
 	delete[] shippment;
+	_Accept(getShipment);
 	delete truck;
 	prt.print(Printer::BottlingPlant, Finished);
 }
