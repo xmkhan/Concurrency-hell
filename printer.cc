@@ -127,7 +127,7 @@ unsigned int Printer::getStateIndex( Kind kind, unsigned int lid ) {
 		case Truck:         index += 1;
 		case NameServer:    index += 1;
 		case WATCardOffice: index += 1;
-    case Parent:        index += 1;
+    default:            break;
 	}
 	return index + lid;
 }
