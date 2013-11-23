@@ -33,7 +33,7 @@ void Student::main() {
 
   WATCard::FWATCard watCard = watCardOffice.create(id, 5);
   VendingMachine *vendingMachine = nameServer.getMachine(id);
-  printer.printer(Printer::Student, (char)Student::Vending, vendingMachine->getId());
+  printer.print(Printer::Student, (char)Student::Vending, vendingMachine->getId());
 
   unsigned int purchasedBottles = 0;
   bool retry = false;
@@ -50,7 +50,7 @@ void Student::main() {
               goto L;
             case VendingMachine::STOCK:
               vendingMachine = nameServer.getMachine(id);
-              printer.printer(Printer::Student, (char)Student::Vending, vendingMachine->getId());
+              printer.print(Printer::Student, (char)Student::Vending, vendingMachine->getId());
               retry = false;
               goto L;
             case VendingMachine::BUY:
@@ -60,7 +60,7 @@ void Student::main() {
             default:
             break;
           }
-      } catch (watCardOffice::Lost &e) {
+      } catch (WATCardOffice::Lost &e) {
         printer.print(Printer::Student, (char)Student::Lost);
         retry = true;
         goto L;
