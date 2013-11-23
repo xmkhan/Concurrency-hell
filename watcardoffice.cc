@@ -1,5 +1,7 @@
 #include "watcardoffice.h"
 #include "MPRNG.h"
+#include "printer.h"
+#include "bank.h"
 
 /**
  * Default constructor
@@ -9,9 +11,9 @@ WATCardOffice::WATCardOffice( Printer &prt, Bank &bank, unsigned int numCouriers
   bank(bank),
   numCouriers(numCouriers),
   terminated(false),
-  couriers(new *Courier[numCouriers]) {
+  couriers(new Courier*[numCouriers]) {
     for (unsigned int i = 0; i < numCouriers; i++)
-      couriers[i] = new Courier(printer, bank, this);
+      couriers[i] = new Courier( prt, bank, *this );
   }
 
 /**
@@ -31,9 +33,9 @@ WATCardOffice::~WATCardOffice() {
  * @param  sid    student id
  * @param  amount amount to create with
  */
-FWATCard WATCardOffice::create( unsigned int sid, unsigned int amount ) {
-  printer.print(Printer::WATCardOffice, (char)WATCardOffice::Create, sid, amount);
-  Job *job = new Job(new Arg(sid, amount), new WATCard());
+WATCard::FWATCard WATCardOffice::create( unsigned int sid, unsigned int amount ) {
+  printer.print(Printer::WATCardOffice, (char)WATCardOffice::Creation, sid, amount);
+  Job *job = new Job(Args(sid, amount, new WATCard()));
   jobs.push(job);
   return job->result;
 }
@@ -45,9 +47,9 @@ FWATCard WATCardOffice::create( unsigned int sid, unsigned int amount ) {
  * @param  amount amount to transfer
  * @param  card   represents the WATCard
  */
-FWATCard WATCardOffice::transfer( unsigned int sid, unsigned int amount, WATCard *card ) {
+WATCard::FWATCard WATCardOffice::transfer( unsigned int sid, unsigned int amount, WATCard *card ) {
   printer.print(Printer::WATCardOffice, (char)WATCardOffice::Transfer, sid, amount);
-  Job *job = new Job(new Arg(sid, amount), card);
+  Job *job = new Job(Args(sid, amount, card));
   jobs.push(job);
   return job->result;
 }
@@ -56,7 +58,7 @@ FWATCard WATCardOffice::transfer( unsigned int sid, unsigned int amount, WATCard
  * Blocking call: Couriers request work from the WATCardOffice
  * @return Job struct containing details of the job to be performed
  */
-Job *WATCardOffice::requestWork() {
+WATCardOffice::Job *WATCardOffice::requestWork() {
   if (jobs.empty()) {
     printer.print(Printer::WATCardOffice, (char)WATCardOffice::Waiting);
     waiting.wait();
@@ -111,11 +113,11 @@ void WATCardOffice::Courier::main() {
   printer.print(Printer::Courier, (char)WATCardOffice::Courier::Starting);
   for ( ;; ) {
     // Block: if no work
-    Job *job = watCardOffice.requestWork();
+    WATCardOffice::Job *job = watCardOffice.requestWork();
     if (job == NULL) break;
     printer.print(Printer::Courier, (char)WATCardOffice::Courier::FundTransfer);
     bank.withdraw(job->args.sid, job->args.amount);
-    job->args.watcard.deposit(amount);
+    job->args.watcard->deposit(job->args.amount);
     printer.print(Printer::Courier, (char)WATCardOffice::Courier::FundComplete);
     if (RNG(1,6) == 1) {
       // 1 in 6 chance that courier loses a student's watcard
