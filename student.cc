@@ -31,16 +31,18 @@ void Student::main() {
           switch (status) {
             case FUNDS:
               watCard = watCardOffice.transfer(vendingMachine->cost() + 5);
-              break;
+              retry = false;
+              goto L;
             case STOCK:
               vendingMachine = nameServer.getMachine(id);
               retry = false;
               goto L;
             case BUY:
-            default: break;
+              purchasedBottles += 1;
+              retry = false;
+            default:
+            break;
           }
-          retry = false;
-          purchasedBottles += 1;
       } catch (watCardOffice::Lost &e) {
         retry = true;
         goto L;
