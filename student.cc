@@ -3,6 +3,7 @@
 #include "printer.h"
 #include "nameserver.h"
 #include "watcardoffice.h"
+#include "vendingmachine.h"
 
 Student::Student( Printer &prt, NameServer &nameServer, WATCardOffice &cardOffice, unsigned int id, unsigned int maxPurchases )
 : printer(prt),
@@ -24,26 +25,26 @@ void Student::main() {
   bool retry = false;
   while (purchasedBottles < numberOfBottles) {
     yield(RNG(1, 10));
+      L:
       try{
-        L:
           if (retry) watCard = watCardOffice.create(id, 5);
-          VendingMachine::Status status = vendingMachine->buy(favouriteFlavour, *watCard());
+          VendingMachine::Status status = vendingMachine->buy((VendingMachine::Flavours)favouriteFlavour, *watCard());
           switch (status) {
-            case FUNDS:
-              watCard = watCardOffice.transfer(vendingMachine->cost() + 5);
+            case VendingMachine::FUNDS:
+              watCard = watCardOffice.transfer(id, vendingMachine->cost() + 5, watCard());
               retry = false;
               goto L;
-            case STOCK:
+            case VendingMachine::STOCK:
               vendingMachine = nameServer.getMachine(id);
               retry = false;
               goto L;
-            case BUY:
+            case VendingMachine::BUY:
               purchasedBottles += 1;
               retry = false;
             default:
             break;
           }
-      } catch (watCardOffice::Lost &e) {
+      } catch (WATCardOffice::Lost &e) {
         retry = true;
         goto L;
       }
