@@ -1,6 +1,8 @@
 #ifndef __CONFIG_H__
 #define __CONFIG_H__
 
+#include <uC++.h>
+
 struct ConfigParms {
   unsigned int sodaCost;                 // MSRP per bottle
   unsigned int numStudents;              // number of students to create
@@ -13,6 +15,6 @@ struct ConfigParms {
   unsigned int numCouriers;              // number of couriers in the pool
 };
 
-void processConﬁgFile( const char * conﬁgFile, ConﬁgParms &cparms );
+void processConfigFile( const char * configFile, ConfigParms &cparms );
 
 #endif

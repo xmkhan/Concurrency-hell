@@ -4,11 +4,23 @@
 #include <uC++.h>
 #include "watcard.h"
 
+#define numFlavours 4
+
 _Monitor Printer;
-_Monitor NameServer;
+_Task NameServer;
 
 
 _Task VendingMachine {
+    Printer &prt;    
+    NameServer &ns;
+    uCondition waiting;
+    unsigned int id, sodaCost, 
+                 maxStockPerFlavour;
+    unsigned int *inventoryList;
+    enum States { Starting = 'S', Restocking = 'r', 
+                  RestockingComplete = 'R', StudentPurchase = 'B', 
+                  Finished = 'F' };
+
     void main();
   public:
     enum Flavours { Cherry = 0, Strawberry, Orange, Grape };                 // flavours of soda (YOU DEFINE)
@@ -20,6 +32,8 @@ _Task VendingMachine {
     void restocked();
     _Nomutex unsigned int cost();
     _Nomutex unsigned int getId();
+
+    ~VendingMachine();
 };
 
 #endif

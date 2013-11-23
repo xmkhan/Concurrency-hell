@@ -1,5 +1,9 @@
 #include "bottlingplant.h"
-#include <algorithm>
+#include "printer.h"
+#include "nameserver.h"
+#include "truck.h"
+#include "MPRNG.h"
+#include "vendingmachine.h"
 
 /**
  * Constructor
@@ -12,17 +16,15 @@
  */
 BottlingPlant::BottlingPlant( Printer &prt, NameServer &nameServer, unsigned int numVendingMachines,
                  unsigned int maxShippedPerFlavour, unsigned int maxStockPerFlavour,
-                 unsigned int timeBetweenShipments ) : prt(prt), ns(ns), closed(false),
+                 unsigned int timeBetweenShipments ):prt(prt), ns(ns), closed(false),
                  numVendingMachines(numVendingMachines), maxShippedPerFlavour(maxShippedPerFlavour),
                  maxStockPerFlavour(maxStockPerFlavour), timeBetweenShipments(timeBetweenShipments),
-                 shippment(new unsigned int[maxNumFlavours]) {
-
-}
+                 shippment(new unsigned int[numFlavours]) {}
 
 /**
  * Destructor
  */
-BootlingPlant::~BottlingPlant() { 
+BottlingPlant::~BottlingPlant() { 
 	closed = true;
 	delete[] shippment;
 	delete truck;
@@ -37,7 +39,9 @@ BootlingPlant::~BottlingPlant() {
  */
 bool BottlingPlant::getShipment( unsigned int cargo[] ) { 
 	if ( closed ) return true;
-	std::copy(std::begin(shippment), std::end(shippment), std::begin(cargo));
+	for ( unsigned int j = 0; j < numFlavours; j++ ) {
+		cargo[j] = shippment[j];
+	}
 	return false;
 }
 
@@ -45,16 +49,16 @@ bool BottlingPlant::getShipment( unsigned int cargo[] ) {
  * Simulate production of soda
  */ 
 void BottlingPlant::main() {
-	truck = new Truck(prt, nameServer, this, numVendingMachines, maxStockPerFlavour);
+	truck = new Truck(prt, ns, *this, numVendingMachines, maxStockPerFlavour);
 	prt.print(Printer::BottlingPlant, Starting);
 	for ( ;; ) {
 		prt.print(Printer::BottlingPlant, GeneratingSoda);
-		for( int i = 0; i < maxNumFlavours; i++ ) {
+		for( int i = 0; i < numFlavours; i++ ) {
 			shippment[i] = RNG(0, maxShippedPerFlavour);
 		}	
 		yield(timeBetweenShipments);
 
-		_Accept(~Table) {
+		_Accept(~BottlingPlant) {
 			break;
 		} or _Accept(getShipment) {
 			prt.print(Printer::BottlingPlant, ShipmentPickedUp);

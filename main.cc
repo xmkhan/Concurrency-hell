@@ -25,13 +25,13 @@ void usage(char *argv[]) {
 
 void uMain::main() {
   int s = getpid();
-  const char *configFilename = "soda.config";
+  std::string configFilename("soda.config");
 
   switch (argc) {
     case 3:
       s = atoi(argv[2]);
     case 2:
-      configFilename = argv[1];
+      configFilename = std::string(argv[1]);
     default:
       break;
   }
@@ -39,7 +39,7 @@ void uMain::main() {
 
   RNG.seed(s);
   ConfigParms config;
-  processConfigFile(configFilename, config);
+  processConfigFile(configFilename.c_str(), config);
 
   Printer printer(config.numStudents, config.numVendingMachines, config.numCouriers);
   Bank bank(config.numStudents);
@@ -64,7 +64,7 @@ void uMain::main() {
     delete students[i];
   }
 
-  delete bottlingplant;
+  delete bottlingPlant;
 
   for (unsigned int i = 0; i < config.numVendingMachines; i++) {
     delete vendingMachines[i];
