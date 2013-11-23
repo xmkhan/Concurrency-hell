@@ -6,7 +6,7 @@
 #include "MPRNG.h"
 
 /**
- * Responsible for distributing soda among 
+ * Responsible for distributing soda among
  * vending machines
  */
 void Truck::main() {
@@ -19,18 +19,18 @@ void Truck::main() {
 	    closing = plant.getShipment(cargo);
 
 	    // if plant is closed, break out of the loop
-	    if (closing) break;                
+	    if (closing) break;
 
 	    // get the cargo size
 	    curCargoSize = 0;
 	    for ( int i = 0; i < numFlavours; i++ ) curCargoSize += cargo[i];
-	    prt.print(Printer::Truck, (char)ShipmentPickedUp, curCargoSize);                  
+	    prt.print(Printer::Truck, (char)ShipmentPickedUp, curCargoSize);
 
 	    // process vending machines in order
 	    // break out of loop if truck runs out of soda
-	    for ( unsigned int i = 0; i < numVendingMachines; i++ ) {	    	
-	        if (!restockVendingMachine(i)) break;	
-	    } 
+	    for ( unsigned int i = 0; i < numVendingMachines; i++ ) {
+	        if (!restockVendingMachine(i)) break;
+	    }
    	}
 }
 
@@ -40,15 +40,15 @@ void Truck::main() {
  * @return false if truck is out of stock, false otherwise
  */
 bool Truck::restockVendingMachine( unsigned int index ) {
-	prt.print(Printer::Truck, (char)Deliver, 
+	prt.print(Printer::Truck, (char)Deliver,
 		machineList[index]->getId(), curCargoSize);
-	
+
 	inventory = machineList[index]->inventory();
 
-	// restock each flavour 
+	// restock each flavour
 	for ( int j = 0; j < numFlavours; j++ ) {
-	    restockFlavour(j);	
-	} 
+	    restockFlavour(j);
+	}
 
 	// failed to restock all flavours
 	if ( outOfFlavour > 0 ) {
@@ -57,13 +57,13 @@ bool Truck::restockVendingMachine( unsigned int index ) {
 	}
 
 
-	prt.print(Printer::Truck, (char)EndDelivery, 
+	prt.print(Printer::Truck, (char)EndDelivery,
 		machineList[index]->getId(), curCargoSize);
 
 	// truck goes back to plant if it runs out of soda
 	if ( outOfFlavour == numFlavours ) return false;
 
-	// 
+	//
 	totalNotReplenished = 0;
 	outOfFlavour = 0;
 
@@ -75,15 +75,15 @@ bool Truck::restockVendingMachine( unsigned int index ) {
  * @param flavour flavour to restock
  */
 void Truck::restockFlavour ( unsigned int flavour ) {
-	// amount of space available in the vending machine 
+	// amount of space available in the vending machine
 	// for this flavour
 	addToVM = maxStockPerFlavour - inventory[flavour];
 
 	// if out of this flavour, go to the next
 	if ( cargo[flavour] == 0 ) {
 		totalNotReplenished += addToVM;
-	    outOfFlavour++;	
-	    return;    		
+	    outOfFlavour++;
+	    return;
 	}
 
 	// if not enough supply, restock what is left
@@ -91,11 +91,11 @@ void Truck::restockFlavour ( unsigned int flavour ) {
 		totalNotReplenished += (addToVM - cargo[flavour]);
 		addToVM = cargo[flavour];
 		outOfFlavour++;
-	} 
+	}
 
 	inventory[flavour] += addToVM;
 	curCargoSize -= addToVM;
-	cargo[flavour] -= addToVM; 	
+	cargo[flavour] -= addToVM;
 }
 
 /**
@@ -109,14 +109,14 @@ void Truck::restockFlavour ( unsigned int flavour ) {
 Truck::Truck( Printer &prt, NameServer &nameServer, BottlingPlant &plant,
        unsigned int numVendingMachines, unsigned int maxStockPerFlavour ):
        prt(prt), ns(nameServer), plant(plant), numVendingMachines(numVendingMachines),
-       maxStockPerFlavour(maxStockPerFlavour), addToVM(0), outOfFlavour(0), 
-       totalNotReplenished(0), curCargoSize(0), cargo(new unsigned int[numFlavours]) {	
+       maxStockPerFlavour(maxStockPerFlavour), addToVM(0), outOfFlavour(0),
+       totalNotReplenished(0), curCargoSize(0), cargo(new unsigned int[numFlavours]) {
 }
 
 /**
  * Destructor
  */
-Truck::~Truck() { 
-	delete[] cargo; 
+Truck::~Truck() {
+	delete[] cargo;
 	prt.print(Printer::Truck, (char)Finished);
 }

@@ -12,13 +12,12 @@ _Task NameServer {
 	VendingMachine **vms;
 	int *studentToVM;
 	unsigned int sIndex, vmIndex;
-	uCondition waiting;
 
-	enum States { Starting = 'S', RegisterVendingMachine = 'R', 
+	enum States { Starting = 'S', RegisterVendingMachine = 'R',
 	              NewVendingMachine = 'N', Finished = 'F' };
 
     void main();
-    
+
   public:
     NameServer( Printer &prt, unsigned int numVendingMachines, unsigned int numStudents );
     void VMregister( VendingMachine *vendingmachine );

@@ -40,7 +40,6 @@ VendingMachine *NameServer::getMachine( unsigned int id ) {
 	studentToVM[id] = (curVmId + 1)%numVendingMachines;
 	prt.print(Printer::NameServer, (char)NewVendingMachine, id,
 		vms[curVmId]->getId());
-	waiting.signal();
 	return vms[curVmId];
 }
 
@@ -48,7 +47,6 @@ VendingMachine *NameServer::getMachine( unsigned int id ) {
  * @return the list of vending machines
  */
 VendingMachine **NameServer::getMachineList() {
-	waiting.signal();
 	return vms;
 }
 
@@ -59,7 +57,6 @@ NameServer::~NameServer() {
 	for( unsigned int i = 0; i < numVendingMachines; i++ ) delete vms[i];
 	delete studentToVM;
 	prt.print(Printer::NameServer, (char)Finished);
-	waiting.signal();
 }
 
 /**

@@ -16,7 +16,7 @@
  */
 BottlingPlant::BottlingPlant( Printer &prt, NameServer &nameServer, unsigned int numVendingMachines,
                  unsigned int maxShippedPerFlavour, unsigned int maxStockPerFlavour,
-                 unsigned int timeBetweenShipments ):prt(prt), ns(ns), closed(false),
+                 unsigned int timeBetweenShipments ):prt(prt), ns(nameServer), closed(false),
                  numVendingMachines(numVendingMachines), maxShippedPerFlavour(maxShippedPerFlavour),
                  maxStockPerFlavour(maxStockPerFlavour), timeBetweenShipments(timeBetweenShipments),
                  shippment(new unsigned int[numFlavours]) {}
@@ -24,7 +24,7 @@ BottlingPlant::BottlingPlant( Printer &prt, NameServer &nameServer, unsigned int
 /**
  * Destructor
  */
-BottlingPlant::~BottlingPlant() { 
+BottlingPlant::~BottlingPlant() {
 	closed = true;
 	delete[] shippment;
 	delete truck;
@@ -34,10 +34,10 @@ BottlingPlant::~BottlingPlant() {
 /**
  * obtain a shipment from the plant
  * @param cargo[] shipment is copied into cargo[]
- * @return true if the bottling plant is closing 
+ * @return true if the bottling plant is closing
  * down and cargo is not changed, and false otherwise
  */
-bool BottlingPlant::getShipment( unsigned int cargo[] ) { 
+bool BottlingPlant::getShipment( unsigned int cargo[] ) {
 	if ( closed ) return true;
 	for ( unsigned int j = 0; j < numFlavours; j++ ) {
 		cargo[j] = shippment[j];
@@ -47,7 +47,7 @@ bool BottlingPlant::getShipment( unsigned int cargo[] ) {
 
 /**
  * Simulate production of soda
- */ 
+ */
 void BottlingPlant::main() {
 	truck = new Truck(prt, ns, *this, numVendingMachines, maxStockPerFlavour);
 	prt.print(Printer::BottlingPlant, Starting);
@@ -55,7 +55,7 @@ void BottlingPlant::main() {
 		prt.print(Printer::BottlingPlant, GeneratingSoda);
 		for( int i = 0; i < numFlavours; i++ ) {
 			shippment[i] = RNG(0, maxShippedPerFlavour);
-		}	
+		}
 		yield(timeBetweenShipments);
 
 		_Accept(~BottlingPlant) {

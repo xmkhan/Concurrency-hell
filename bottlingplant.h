@@ -13,7 +13,7 @@ _Task BottlingPlant {
     bool closed;
     unsigned int numVendingMachines, maxShippedPerFlavour,
                  maxStockPerFlavour, timeBetweenShipments;
-    unsigned int* shippment;                 
+    unsigned int* shippment;
 
     enum States { Starting = 'S', GeneratingSoda = 'G', ShipmentPickedUp = 'P', Finished = 'F' };
     void main();
