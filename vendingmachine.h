@@ -4,10 +4,10 @@
 #include <uC++.h>
 #include "watcard.h"
 
-#define numFlavours 4;
+#define numFlavours 4
 
 _Monitor Printer;
-_Monitor NameServer;
+_Task NameServer;
 
 
 _Task VendingMachine {
@@ -16,10 +16,10 @@ _Task VendingMachine {
     uCondition waiting;
     unsigned int id, sodaCost, 
                  maxStockPerFlavour;
-    unsigned int *inventory;
-    enum States = { Starting = "S", Restocking = "r", 
-                    RestockingComplete = "R", StudentPurchase = "B", 
-                    Finished = "F" };
+    unsigned int *inventoryList;
+    enum States { Starting = 'S', Restocking = 'r', 
+                  RestockingComplete = 'R', StudentPurchase = 'B', 
+                  Finished = 'F' };
 
     void main();
   public:
@@ -32,6 +32,8 @@ _Task VendingMachine {
     void restocked();
     _Nomutex unsigned int cost();
     _Nomutex unsigned int getId();
+
+    ~VendingMachine();
 };
 
 #endif

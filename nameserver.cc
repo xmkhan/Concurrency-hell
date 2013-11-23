@@ -11,11 +11,10 @@
  */
 NameServer::NameServer( Printer &prt, unsigned int numVendingMachines, unsigned int numStudents ): 
 	prt(prt), numVendingMachines(numVendingMachines), numStudents(numStudents),
-    vms(new *VendingMachine[numVendingMachines]), sIndex(0), vmIndex(0) {
+    vms(new VendingMachine*[numVendingMachines]), studentToVM(new int[numStudents]), sIndex(0), vmIndex(0) {
     
     // assign studnets to an initial vending machine
-    studentToVM = new int[numStudents];
-    for ( int i = 0; i < numStudents; i++ ) studentToVM[i%numVendingMachines];
+    for ( unsigned int i = 0; i < numStudents; i++ ) studentToVM[i%numVendingMachines];
 
     prt.print(Printer::NameServer, (char)Starting);	
 }
@@ -26,10 +25,10 @@ NameServer::NameServer( Printer &prt, unsigned int numVendingMachines, unsigned 
  */
 void NameServer::VMregister( VendingMachine *vendingMachine) {
 	// register he vending machine
-	vms[vmIndex++] = vendingmachine;
+	vms[vmIndex++] = vendingMachine;
 
 	prt.print(Printer::NameServer, (char)RegisterVendingMachine, 
-		vendingmachine->getId());
+		vendingMachine->getId());
 }
 
 /**
@@ -56,8 +55,8 @@ VendingMachine **NameServer::getMachineList() {
 /**
  * Destructor
  */
-VendingMachine::~VendingMachine() {
-	for( int i = 0; i < numVendingMachines; i++ ) delete vms[i];
+NameServer::~NameServer() {
+	for( unsigned int i = 0; i < numVendingMachines; i++ ) delete vms[i];
 	delete studentToVM;
 	prt.print(Printer::NameServer, (char)Finished);
 	waiting.signal();
