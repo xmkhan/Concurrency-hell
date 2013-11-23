@@ -7,7 +7,7 @@ _Monitor Bank;
 _Task Parent {
     void main();
   public:
-    enum States = { Starting = "S", Deposit = "D", Finished = "F" };
+    enum States { Starting = 'S', Deposit = 'D', Finished = 'F' };
     Parent( Printer &prt, Bank &bank, unsigned int numStudents, unsigned int parentalDelay );
     ~Parent();
   private:

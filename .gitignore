@@ -21,3 +21,6 @@ soda_64
 
 # Dependency files
 *.d
+
+# Mac files
+.DS_Store
