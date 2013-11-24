@@ -162,8 +162,8 @@ void Printer::output() {
       break;
     }
     if (i < numColumns - 1) cout << "\t";
+    else cout << endl;
   }
-  cout << endl;
 }
 
 /**
