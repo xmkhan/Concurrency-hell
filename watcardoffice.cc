@@ -20,11 +20,11 @@ WATCardOffice::WATCardOffice( Printer &prt, Bank &bank, unsigned int numCouriers
  * Destructor
  */
 WATCardOffice::~WATCardOffice() {
-  printer.print(Printer::WATCardOffice, (char)WATCardOffice::Finished);
   terminated = true;
   while(!waiting.empty()) waiting.signal();
   for (unsigned int i = 0; i < numCouriers; i++) delete couriers[i];
   delete[] couriers;
+  printer.print(Printer::WATCardOffice, (char)WATCardOffice::Finished);
 }
 
 /**

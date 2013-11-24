@@ -54,7 +54,6 @@ VendingMachine **NameServer::getMachineList() {
  * Destructor
  */
 NameServer::~NameServer() {
-	for( unsigned int i = 0; i < numVendingMachines; i++ ) delete vms[i];
 	delete studentToVM;
 	prt.print(Printer::NameServer, (char)Finished);
 }

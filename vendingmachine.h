@@ -11,15 +11,17 @@ _Task NameServer;
 
 
 _Task VendingMachine {
-    Printer &prt;    
+    Printer &prt;
     NameServer &ns;
     uCondition waiting;
-    unsigned int id, sodaCost, 
+    unsigned int id, sodaCost,
                  maxStockPerFlavour;
     unsigned int *inventoryList;
-    enum States { Starting = 'S', Restocking = 'r', 
-                  RestockingComplete = 'R', StudentPurchase = 'B', 
+    enum States { Starting = 'S', Restocking = 'r',
+                  RestockingComplete = 'R', StudentPurchase = 'B',
                   Finished = 'F' };
+
+    bool stocked;
 
     void main();
   public:
