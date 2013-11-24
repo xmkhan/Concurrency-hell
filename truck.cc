@@ -68,7 +68,7 @@ bool Truck::restockVendingMachine( unsigned int index ) {
 	outOfFlavour = 0;
 
 	machineList[index]->restocked();
-  return true;
+	return true;
 }
 
 /**
@@ -112,6 +112,7 @@ Truck::Truck( Printer &prt, NameServer &nameServer, BottlingPlant &plant,
        prt(prt), ns(nameServer), plant(plant), numVendingMachines(numVendingMachines),
        maxStockPerFlavour(maxStockPerFlavour), addToVM(0), outOfFlavour(0),
        totalNotReplenished(0), curCargoSize(0), cargo(new unsigned int[numFlavours]) {
+       	for ( unsigned int i = 0; i < numFlavours; i++ ) cargo[i] = 0;
 }
 
 /**

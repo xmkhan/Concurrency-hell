@@ -29,8 +29,10 @@ void VendingMachine::main() {
  * @param maxStockPerFlavour max space available for each soda type
  */
 VendingMachine::VendingMachine( Printer &prt, NameServer &nameServer, unsigned int id, unsigned int sodaCost,
-                    unsigned int maxStockPerFlavour ):prt(prt), ns(nameServer), id(id), sodaCost(sodaCost), 
-                    maxStockPerFlavour(maxStockPerFlavour), inventoryList(new unsigned int[numFlavours]) {}
+    unsigned int maxStockPerFlavour ):prt(prt), ns(nameServer), id(id), sodaCost(sodaCost), 
+    maxStockPerFlavour(maxStockPerFlavour), inventoryList(new unsigned int[numFlavours]) {
+    	for( unsigned int i = 0; i < numFlavours; i++ ) inventoryList[i] = 0;
+}
 
 
 /**
