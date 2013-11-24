@@ -21,6 +21,10 @@ WATCardOffice::WATCardOffice( Printer &prt, Bank &bank, unsigned int numCouriers
  */
 WATCardOffice::~WATCardOffice() {
   terminated = true;
+  while(!jobs.empty()) {
+    Job *job = jobs.front(); jobs.pop();
+    delete job;
+  }
 
   while(!waiting.empty()) waiting.signalBlock();
   for (unsigned int i = 0; i < numCouriers; i++) delete couriers[i];

@@ -64,4 +64,5 @@ void Student::main() {
         goto L;
       }
   }
+  delete watCard;
 }
