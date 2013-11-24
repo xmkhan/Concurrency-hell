@@ -136,7 +136,7 @@ unsigned int Printer::getStateIndex( Kind kind, unsigned int lid ) {
  * Destructor
  */
 Printer::~Printer() {
-	delete states;
+	delete[] states;
 	cout << "***********************" << endl;
 }
 
