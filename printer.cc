@@ -155,7 +155,7 @@ void Printer::output() {
       cout << (char)states[i].state; // output state
 
       if (states[i].a != -1 )  cout << states[i].a;
-      if ( states[i].b != -1 ) cout << ", " << states[i].b;
+      if ( states[i].b != -1 ) cout << "," << states[i].b;
     }
     if (lastIndex >= 0 && i == (unsigned int)lastIndex) {
       cout << endl;

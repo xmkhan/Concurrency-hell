@@ -44,7 +44,7 @@ VendingMachine::VendingMachine( Printer &prt, NameServer &nameServer, unsigned i
 VendingMachine::Status VendingMachine::buy( VendingMachine::Flavours flavour, WATCard &card ) {
 	if ( inventoryList[flavour] == 0 ) return STOCK;
 	if ( card.getBalance() < sodaCost ) return FUNDS;
-	card.deposit(sodaCost);
+	card.withdraw(sodaCost);
 	inventoryList[flavour]--;
 	prt.print(Printer::Vending, id, (char)StudentPurchase, flavour, inventoryList[flavour]);
 	return BUY;
@@ -76,4 +76,7 @@ _Nomutex unsigned int VendingMachine::getId() { return id; }
 /**
  * Destructor
  */
-VendingMachine::~VendingMachine() { delete[] inventoryList; }
+VendingMachine::~VendingMachine() { 
+	prt.print(Printer::Vending, id, (char)Finished);
+	delete[] inventoryList; 
+}
