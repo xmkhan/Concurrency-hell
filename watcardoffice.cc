@@ -13,7 +13,7 @@ WATCardOffice::WATCardOffice( Printer &prt, Bank &bank, unsigned int numCouriers
   terminated(false),
   couriers(new Courier*[numCouriers]) {
     for (unsigned int i = 0; i < numCouriers; i++)
-      couriers[i] = new Courier( prt, bank, *this );
+      couriers[i] = new Courier( prt, bank, *this, i );
   }
 
 /**
@@ -91,16 +91,17 @@ void WATCardOffice::main() {
 /**
  * Default constructor
  */
-WATCardOffice::Courier::Courier(Printer &prt, Bank &bank, WATCardOffice &watCardOffice)
+WATCardOffice::Courier::Courier(Printer &prt, Bank &bank, WATCardOffice &watCardOffice, unsigned int id)
 : printer(prt),
   bank(bank),
-  watCardOffice(watCardOffice) {}
+  watCardOffice(watCardOffice),
+  id(id) {}
 
 /**
  * Destructor
  */
 WATCardOffice::Courier::~Courier() {
-  printer.print(Printer::Courier, (char) WATCardOffice::Courier::Finished);
+  printer.print(Printer::Courier, (char) WATCardOffice::Courier::Finished, id);
 }
 
 /**
@@ -110,7 +111,7 @@ WATCardOffice::Courier::~Courier() {
  * and has a 1/6 chance to lose the student's WATCard
  */
 void WATCardOffice::Courier::main() {
-  printer.print(Printer::Courier, (char)WATCardOffice::Courier::Starting);
+  printer.print(Printer::Courier, (char)WATCardOffice::Courier::Starting, id);
   for ( ;; ) {
     // Block: if no work
     WATCardOffice::Job *job = watCardOffice.requestWork();

@@ -18,7 +18,7 @@ Student::Student( Printer &prt, NameServer &nameServer, WATCardOffice &cardOffic
 /**
  * Destructor
  */
-Student::~Student() { printer.print(Printer::Student, (char)Student::Finished); }
+Student::~Student() { printer.print(Printer::Student, (char)Student::Finished, id); }
 
 /**
  * Student starts buying it's favourite soda from it's assigned vending machine.
@@ -29,7 +29,7 @@ Student::~Student() { printer.print(Printer::Student, (char)Student::Finished); 
 void Student::main() {
   unsigned int numberOfBottles = RNG(1, maxPurchases);
   unsigned int favouriteFlavour = RNG(0, 3);
-  printer.print(Printer::Student, (char)Student::Starting);
+  printer.print(Printer::Student, (char)Student::Starting, (VendingMachine::Flavours) favouriteFlavour, numberOfBottles);
 
   WATCard::FWATCard watCard = watCardOffice.create(id, 5);
   VendingMachine *vendingMachine = nameServer.getMachine(id);
