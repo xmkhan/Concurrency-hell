@@ -24,7 +24,7 @@ Printer::Printer( unsigned int numStudents, unsigned int numVendingMachines, uns
 	for (unsigned int i = 0; i < numStudents; i++)        cout << "Stud" << i << "\t";
 	for (unsigned int i = 0; i < numVendingMachines; i++) cout << "Mach" << i << "\t";
 	for (unsigned int i = 0; i < numCouriers-1; i++)      cout << "Cour" << i << "\t";
-	cout << "Cour" << numCouriers << endl;
+	cout << "Cour" << (numCouriers-1) << endl;
 
     // Print underlining name row
 	for (unsigned int i = 0; i < numColumns-1; i++) {

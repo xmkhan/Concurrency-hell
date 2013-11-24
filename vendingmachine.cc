@@ -7,7 +7,7 @@
  * restocking
  */
 void VendingMachine::main() {
-	prt.print(Printer::Vending, (char)Starting, sodaCost);
+	prt.print(Printer::Vending, id, (char)Starting, sodaCost);
 	ns.VMregister(this);
 	for ( ;; ) {
 		_Accept(~VendingMachine) {
@@ -15,7 +15,7 @@ void VendingMachine::main() {
 		} or _Accept(buy) {
 		} or _Accept(inventory) {
 			waiting.wait();
-			prt.print(Printer::Vending, (char)RestockingComplete);
+			prt.print(Printer::Vending, id, (char)RestockingComplete);
 		}
 	}
 }
@@ -46,7 +46,7 @@ VendingMachine::Status VendingMachine::buy( VendingMachine::Flavours flavour, WA
 	if ( card.getBalance() < sodaCost ) return FUNDS;
 	card.deposit(sodaCost);
 	inventoryList[flavour]--;
-	prt.print(Printer::Vending, (char)StudentPurchase, flavour, inventoryList[flavour]);
+	prt.print(Printer::Vending, id, (char)StudentPurchase, flavour, inventoryList[flavour]);
 	return BUY;
 }
 
@@ -54,7 +54,7 @@ VendingMachine::Status VendingMachine::buy( VendingMachine::Flavours flavour, WA
  * @return the vending machines inventory
  */
 unsigned int* VendingMachine::inventory() {
-	prt.print(Printer::Vending, (char)Restocking);
+	prt.print(Printer::Vending, id, (char)Restocking);
 	return inventoryList;
 }
 
