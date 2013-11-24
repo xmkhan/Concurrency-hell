@@ -60,12 +60,13 @@ bool Truck::restockVendingMachine( unsigned int index ) {
 	prt.print(Printer::Truck, (char)EndDelivery,
 		machineList[index]->getId(), curCargoSize);
 
-	// truck goes back to plant if it runs out of soda
-	if ( outOfFlavour == numFlavours ) return false;
+    totalNotReplenished = 0;
 
-	//
-	totalNotReplenished = 0;
-	outOfFlavour = 0;
+	// truck goes back to plant if it runs out of soda
+	if ( outOfFlavour == numFlavours ) {
+        outOfFlavour = 0;
+        return false;
+    }
 
 	machineList[index]->restocked();
 	return true;
