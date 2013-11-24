@@ -14,7 +14,7 @@ NameServer::NameServer( Printer &prt, unsigned int numVendingMachines, unsigned 
     vms(new VendingMachine*[numVendingMachines]), studentToVM(new int[numStudents]), sIndex(0), vmIndex(0) {
 
     // assign studnets to an initial vending machine
-    for ( unsigned int i = 0; i < numStudents; i++ ) studentToVM[i % numVendingMachines] = i % numVendingMachines;
+    for ( unsigned int i = 0; i < numStudents; i++ ) studentToVM[i] = i % numVendingMachines;
 
     prt.print(Printer::NameServer, (char)Starting);
 }
