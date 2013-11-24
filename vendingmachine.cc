@@ -12,13 +12,13 @@ void VendingMachine::main() {
 	for ( ;; ) {
 		_Accept(~VendingMachine) {
 			break;
-		} or _When(stocked) _Accept(buy) {
 		} or _Accept(inventory) {
             prt.print(Printer::Vending, id, (char)Restocking);
-			waiting.wait();
+            waiting.wait();
             prt.print(Printer::Vending, id, (char)RestockingComplete);
             stocked = true;
-		}
+        } or _When(stocked && total != 0) _Accept(buy) {
+        }
 	}
 }
 
@@ -32,7 +32,7 @@ void VendingMachine::main() {
  */
 VendingMachine::VendingMachine( Printer &prt, NameServer &nameServer, unsigned int id, unsigned int sodaCost,
     unsigned int maxStockPerFlavour ):prt(prt), ns(nameServer), id(id), sodaCost(sodaCost),
-    maxStockPerFlavour(maxStockPerFlavour), inventoryList(new unsigned int[numFlavours]), stocked(false) {
+    maxStockPerFlavour(maxStockPerFlavour), inventoryList(new unsigned int[numFlavours]), total(0), stocked(false) {
     	for( unsigned int i = 0; i < numFlavours; i++ ) inventoryList[i] = 0;
 }
 
@@ -48,6 +48,7 @@ VendingMachine::Status VendingMachine::buy( VendingMachine::Flavours flavour, WA
 	if ( card.getBalance() < sodaCost ) return FUNDS;
 	card.withdraw(sodaCost);
 	inventoryList[flavour]--;
+    total--;
 	prt.print(Printer::Vending, id, (char)StudentPurchase, flavour, inventoryList[flavour]);
 	return BUY;
 }
@@ -64,6 +65,7 @@ unsigned int* VendingMachine::inventory() {
  * signal the uCondition to unblock the vending machines main
  */
 void VendingMachine::restocked() {
+    for ( int i = 0; i < numFlavours; i++ ) total += inventoryList[i];
     waiting.signal();
 }
 
