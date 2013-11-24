@@ -116,10 +116,10 @@ void WATCardOffice::Courier::main() {
     // Block: if no work
     WATCardOffice::Job *job = watCardOffice.requestWork();
     if (job == NULL) break;
-    printer.print(Printer::Courier, id, (char)WATCardOffice::Courier::FundTransfer);
+    printer.print(Printer::Courier, id, (char)WATCardOffice::Courier::FundTransfer, job->args.sid, job->args.amount);
     bank.withdraw(job->args.sid, job->args.amount);
     job->args.watcard->deposit(job->args.amount);
-    printer.print(Printer::Courier, id, (char)WATCardOffice::Courier::FundComplete);
+    printer.print(Printer::Courier, id, (char)WATCardOffice::Courier::FundComplete, job->args.sid, job->args.amount);
     if (RNG(1,6) == 1) {
       // 1 in 6 chance that courier loses a student's watcard
       job->result.exception(new Lost);
