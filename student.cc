@@ -18,7 +18,7 @@ Student::Student( Printer &prt, NameServer &nameServer, WATCardOffice &cardOffic
 /**
  * Destructor
  */
-Student::~Student() { printer.print(Printer::Student, (char)Student::Finished, id); }
+Student::~Student() { printer.print(Printer::Student, id, (char)Student::Finished); }
 
 /**
  * Student starts buying it's favourite soda from it's assigned vending machine.
@@ -29,11 +29,11 @@ Student::~Student() { printer.print(Printer::Student, (char)Student::Finished, i
 void Student::main() {
   unsigned int numberOfBottles = RNG(1, maxPurchases);
   unsigned int favouriteFlavour = RNG(0, 3);
-  printer.print(Printer::Student, (char)Student::Starting, (VendingMachine::Flavours) favouriteFlavour, numberOfBottles);
+  printer.print(Printer::Student, id, (char)Student::Starting, (VendingMachine::Flavours) favouriteFlavour, numberOfBottles);
 
   WATCard::FWATCard watCard = watCardOffice.create(id, 5);
   VendingMachine *vendingMachine = nameServer.getMachine(id);
-  printer.print(Printer::Student, (char)Student::Vending, vendingMachine->getId());
+  printer.print(Printer::Student, id, (char)Student::Vending, vendingMachine->getId());
 
   unsigned int purchasedBottles = 0;
   bool retry = false;
@@ -50,16 +50,16 @@ void Student::main() {
               goto L;
             case VendingMachine::STOCK:
               vendingMachine = nameServer.getMachine(id);
-              printer.print(Printer::Student, (char)Student::Vending, vendingMachine->getId());
+              printer.print(Printer::Student, id, (char)Student::Vending, vendingMachine->getId());
               goto L;
             case VendingMachine::BUY:
               purchasedBottles += 1;
-              printer.print(Printer::Student, (char)Student::Bought, watCard()->getBalance());
+              printer.print(Printer::Student, id, (char)Student::Bought, watCard()->getBalance());
             default:
             break;
           }
       } catch (WATCardOffice::Lost &e) {
-        printer.print(Printer::Student, (char)Student::Lost);
+        printer.print(Printer::Student, id, (char)Student::Lost);
         retry = true;
         goto L;
       }

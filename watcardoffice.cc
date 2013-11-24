@@ -101,7 +101,7 @@ WATCardOffice::Courier::Courier(Printer &prt, Bank &bank, WATCardOffice &watCard
  * Destructor
  */
 WATCardOffice::Courier::~Courier() {
-  printer.print(Printer::Courier, (char) WATCardOffice::Courier::Finished, id);
+  printer.print(Printer::Courier, id, (char)WATCardOffice::Courier::Finished);
 }
 
 /**
@@ -111,15 +111,15 @@ WATCardOffice::Courier::~Courier() {
  * and has a 1/6 chance to lose the student's WATCard
  */
 void WATCardOffice::Courier::main() {
-  printer.print(Printer::Courier, (char)WATCardOffice::Courier::Starting, id);
+  printer.print(Printer::Courier, id, (char)WATCardOffice::Courier::Starting);
   for ( ;; ) {
     // Block: if no work
     WATCardOffice::Job *job = watCardOffice.requestWork();
     if (job == NULL) break;
-    printer.print(Printer::Courier, (char)WATCardOffice::Courier::FundTransfer);
+    printer.print(Printer::Courier, id, (char)WATCardOffice::Courier::FundTransfer);
     bank.withdraw(job->args.sid, job->args.amount);
     job->args.watcard->deposit(job->args.amount);
-    printer.print(Printer::Courier, (char)WATCardOffice::Courier::FundComplete);
+    printer.print(Printer::Courier, id, (char)WATCardOffice::Courier::FundComplete);
     if (RNG(1,6) == 1) {
       // 1 in 6 chance that courier loses a student's watcard
       job->result.exception(new Lost);
