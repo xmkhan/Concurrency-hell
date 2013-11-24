@@ -21,7 +21,8 @@ WATCardOffice::WATCardOffice( Printer &prt, Bank &bank, unsigned int numCouriers
  */
 WATCardOffice::~WATCardOffice() {
   terminated = true;
-  while(!waiting.empty()) waiting.signal();
+
+  while(!waiting.empty()) waiting.signalBlock();
   for (unsigned int i = 0; i < numCouriers; i++) delete couriers[i];
   delete[] couriers;
   printer.print(Printer::WATCardOffice, (char)WATCardOffice::Finished);
@@ -59,7 +60,7 @@ WATCard::FWATCard WATCardOffice::transfer( unsigned int sid, unsigned int amount
  * @return Job struct containing details of the job to be performed
  */
 WATCardOffice::Job *WATCardOffice::requestWork() {
-  if (jobs.empty()) {
+  if (jobs.empty() && !terminated) {
     printer.print(Printer::WATCardOffice, (char)WATCardOffice::Waiting);
     waiting.wait();
   }
