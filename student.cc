@@ -40,18 +40,18 @@ void Student::main() {
   while (purchasedBottles < numberOfBottles) {
     yield(RNG(1, 10));
       L:
-      try{
+      try {
           if (retry) watCard = watCardOffice.create(id, 5);
           retry = false;
           VendingMachine::Status status = vendingMachine->buy((VendingMachine::Flavours)favouriteFlavour, *watCard());
           switch (status) {
             case VendingMachine::FUNDS:
               watCard = watCardOffice.transfer(id, vendingMachine->cost() + 5, watCard());
-              goto L;
+              break;
             case VendingMachine::STOCK:
               vendingMachine = nameServer.getMachine(id);
               printer.print(Printer::Student, id, (char)Student::Vending, vendingMachine->getId());
-              goto L;
+              break;
             case VendingMachine::BUY:
               purchasedBottles += 1;
               printer.print(Printer::Student, id, (char)Student::Bought, watCard()->getBalance());
