@@ -40,7 +40,7 @@ void Student::main() {
   while (purchasedBottles < numberOfBottles) {
     yield(RNG(1, 10));
       L:
-      try{
+      try {
           if (retry) watCard = watCardOffice.create(id, 5);
           retry = false;
           VendingMachine::Status status = vendingMachine->buy((VendingMachine::Flavours)favouriteFlavour, *watCard());

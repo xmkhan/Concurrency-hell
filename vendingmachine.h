@@ -21,6 +21,8 @@ _Task VendingMachine {
                   RestockingComplete = 'R', StudentPurchase = 'B',
                   Finished = 'F' };
 
+    unsigned int total;
+
     bool stocked;
 
     void main();
