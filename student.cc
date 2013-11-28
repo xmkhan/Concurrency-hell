@@ -51,7 +51,7 @@ void Student::main() {
             case VendingMachine::STOCK:
               vendingMachine = nameServer.getMachine(id);
               printer.print(Printer::Student, id, (char)Student::Vending, vendingMachine->getId());
-              goto L;
+              break;
             case VendingMachine::BUY:
               purchasedBottles += 1;
               printer.print(Printer::Student, id, (char)Student::Bought, watCard()->getBalance());

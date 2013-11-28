@@ -28,7 +28,7 @@ Bank::~Bank() {
 void Bank::deposit( unsigned int id, unsigned int amount ) {
   bank[id] += amount;
   // Unblock all withdraw requests as long as student has enough money
-  waiting[id].signal();
+  if (bank[id] >= 0) waiting[id].signal();
 }
 
 /**
@@ -38,8 +38,6 @@ void Bank::deposit( unsigned int id, unsigned int amount ) {
  * @param amount money to withdraw
  */
 void Bank::withdraw( unsigned int id, unsigned int amount ) {
-  while (bank[id] < amount) {
-    waiting[id].wait();
-  }
   bank[id] -= amount;
+  if (bank[id] < 0) waiting[id].wait();
 }
