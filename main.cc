@@ -35,7 +35,7 @@ void uMain::main() {
     default:
       break;
   }
-  if (s <= 0) usage(argv);
+  if (s <= 0 || argc > 3) usage(argv);
 
   RNG.seed(s);
   ConfigParms config;
