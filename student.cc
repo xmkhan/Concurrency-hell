@@ -47,7 +47,7 @@ void Student::main() {
           switch (status) {
             case VendingMachine::FUNDS:
               watCard = watCardOffice.transfer(id, vendingMachine->cost() + 5, watCard());
-              goto L;
+              break;
             case VendingMachine::STOCK:
               vendingMachine = nameServer.getMachine(id);
               printer.print(Printer::Student, id, (char)Student::Vending, vendingMachine->getId());
