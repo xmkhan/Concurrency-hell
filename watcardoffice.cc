@@ -68,7 +68,6 @@ WATCardOffice::Job *WATCardOffice::requestWork() {
     printer.print(Printer::WATCardOffice, (char)WATCardOffice::Waiting);
     waiting.wait();
   }
-  // TODO(mokhan): finish all remaining jobs?
   if (terminated) return NULL;
   Job *job = jobs.front(); jobs.pop();
   return job;
@@ -86,8 +85,7 @@ void WATCardOffice::main() {
     _Accept(~WATCardOffice) {
       break;
     } or _Accept(create, transfer) {
-      // Unblock: Courier because job is now available
-      // TODO(mokhan): .signal() might be enough but could lead to starvation
+      // Unblock Courier because job is now available
       waiting.signalBlock();
     } or _Accept(requestWork) {}
   }

@@ -73,7 +73,7 @@ Script started on Thu 28 Nov 2013 06:58:55 PM EST
 1%>linux024:~/cs343/a6/cs343-a6> ./soda soda.config 10 > test.out
 1%>linux024:~/cs343/a6/cs343-a6> ./soda soda.config
 Parent  WATOFF  Names Truck Plant Stud0 Stud1 Mach0 Mach1 Mach2 Cour0
-******  ******  ******  ******  ******  ******  ******  ******  ******  ******  ******
+*******  *******  *******  *******  *******  *******  *******  *******  *******  *******  *******
 S S S         S2      S
     R0    S       S2  S2
 D0,2  W R1  S G S3,3  S3,2
@@ -171,8 +171,8 @@ CODE TESTED:
 SCRIPT:
 Parent  WATOFF  Names Truck Plant Stud0 Stud1 Stud2 Stud3 Stud4 Stud5 Stud6 Stud7 Mach0 Mach1 Mach2 Mach3 Mach4 Mach5
 Mach6 Mach7 Cour0
-******  ******  ******  ******  ******  ******  ******  ******  ******  ******  ******  ******  ******  ******
-******  ******  ******  ******  ******  ******  ******  ******
+*******  *******  *******  *******  *******  *******  *******  *******  *******  *******  *******  *******  *******  *******
+*******  *******  *******  *******  *******  *******  *******  *******
 S S S                     S2                S
     R0    S                   S2  S2  S2  S2  S2  S2  S2
 D4,3  W R1  S G S3,8  S0,3  S0,7  S1,8  S3,10 S3,7  S3,1  S2,9
@@ -272,8 +272,8 @@ ParentalDelay                2
 NumCouriers                 1
 1%>linux032:~/cs343/a6> ./soda
 Parent  WATOFF  Names Truck Plant Stud0 Mach0 Mach1 Mach2 Mach3 Mach4 Mach5 Mach6 Mach7 Mach8 Mach9 Cour0
-******  ******  ******  ******  ******  ******  ******  ******  ******  ******  ******  ******  ******  ******
-******  ******  ******
+*******  *******  *******  *******  *******  *******  *******  *******  *******  *******  *******  *******  *******  *******
+*******  *******  *******
 S S S       S2                    S
              …
                     ...
