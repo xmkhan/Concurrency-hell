@@ -13,8 +13,9 @@ void Truck::main() {
 	bool closing;
 
 	prt.print(Printer::Truck, Starting);
+    machineList = ns.getMachineList();
+
 	for( ;; ) {
-	    machineList = ns.getMachineList();
 	    yield(RNG(1, 10));
 	    closing = plant.getShipment(cargo);
 
@@ -67,7 +68,7 @@ bool Truck::restockVendingMachine( unsigned int index ) {
         outOfFlavour = 0;
         return false;
     }
-
+    outOfFlavour = 0;
 	machineList[index]->restocked();
 	return true;
 }

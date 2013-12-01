@@ -8,7 +8,6 @@
  */
 void VendingMachine::main() {
 	prt.print(Printer::Vending, id, (char)Starting, sodaCost);
-	ns.VMregister(this);
 	for ( ;; ) {
 		_Accept(~VendingMachine) {
 			break;
@@ -34,6 +33,7 @@ VendingMachine::VendingMachine( Printer &prt, NameServer &nameServer, unsigned i
     unsigned int maxStockPerFlavour ):prt(prt), ns(nameServer), id(id), sodaCost(sodaCost),
     maxStockPerFlavour(maxStockPerFlavour), inventoryList(new unsigned int[numFlavours]), total(0), stocked(false) {
     	for( unsigned int i = 0; i < numFlavours; i++ ) inventoryList[i] = 0;
+        ns.VMregister(this);
 }
 
 
