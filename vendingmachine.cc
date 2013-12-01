@@ -13,10 +13,10 @@ void VendingMachine::main() {
 			break;
 		} or _Accept(inventory) {
             prt.print(Printer::Vending, id, (char)Restocking);
-            waiting.wait();
+        } or _Accept(restocked) {
             prt.print(Printer::Vending, id, (char)RestockingComplete);
             stocked = true;
-        } or _When(stocked && total != 0) _Accept(buy) {
+        }or _When(stocked && total != 0) _Accept(buy) {
         }
 	}
 }
@@ -66,7 +66,6 @@ unsigned int* VendingMachine::inventory() {
  */
 void VendingMachine::restocked() {
     for ( int i = 0; i < numFlavours; i++ ) total += inventoryList[i];
-    waiting.signal();
 }
 
 /**
