@@ -13,18 +13,13 @@ _Task NameServer;
 _Task VendingMachine {
     Printer &prt;
     NameServer &ns;
-    uCondition waiting;
     unsigned int id, sodaCost,
                  maxStockPerFlavour;
     unsigned int *inventoryList;
     enum States { Starting = 'S', Restocking = 'r',
                   RestockingComplete = 'R', StudentPurchase = 'B',
                   Finished = 'F' };
-
-    unsigned int total;
-
     bool stocked;
-
     void main();
   public:
     enum Flavours { Cherry = 0, Strawberry, Orange, Grape };                 // flavours of soda (YOU DEFINE)

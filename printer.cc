@@ -28,9 +28,9 @@ Printer::Printer( unsigned int numStudents, unsigned int numVendingMachines, uns
 
     // Print underlining name row
 	for (unsigned int i = 0; i < numColumns-1; i++) {
-		cout << "******\t";
+		cout << "*******\t";
 	}
-	cout << "******\n";
+	cout << "*******\n";
 	flush();
 }
 
