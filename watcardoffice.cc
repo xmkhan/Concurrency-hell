@@ -65,10 +65,10 @@ WATCard::FWATCard WATCardOffice::transfer( unsigned int sid, unsigned int amount
  */
 WATCardOffice::Job *WATCardOffice::requestWork() {
   if (jobs.empty() && !terminated) {
-    printer.print(Printer::WATCardOffice, (char)WATCardOffice::Waiting);
     waiting.wait();
   }
   if (terminated) return NULL;
+  printer.print(Printer::WATCardOffice, (char)WATCardOffice::Waiting);
   Job *job = jobs.front(); jobs.pop();
   return job;
 }
