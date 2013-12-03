@@ -12,11 +12,11 @@ void VendingMachine::main() {
 		_Accept(~VendingMachine) {
 			break;
 		} or _Accept(inventory) {
-            prt.print(Printer::Vending, id, (char)Restocking);
-        } or _Accept(restocked) {
-            prt.print(Printer::Vending, id, (char)RestockingComplete);
-        }or _When(stocked) _Accept(buy) {
-        }
+      prt.print(Printer::Vending, id, (char)Restocking);
+    } or _Accept(restocked) {
+      prt.print(Printer::Vending, id, (char)RestockingComplete);
+    } or _When(stocked) _Accept(buy) {
+    }
 	}
 }
 
@@ -60,7 +60,7 @@ unsigned int* VendingMachine::inventory() {
 }
 
 /**
- * signal the uCondition to unblock the vending machines main
+ * set the stocked flag variable to true
  */
 void VendingMachine::restocked() {
     stocked = true;
