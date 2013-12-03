@@ -196,8 +196,148 @@ By carefully walking through the output of the program, no evident signs of star
 a chance to run, and execute the tasks it was assigned to.  3 more tests of various sizes were performed to ensure
 the success of the first test was not an accident.
 
+TEST 5: STANDARD RUN WITH OUTPUT
+------
+DESCRIPTION: Ensure that a complete run of the soda program executes with valid output
 
-TEST 5: One vending machine to many students
+SAMPLE DATA:
+Default soda.config
+./soda soda.config
+
+CODE TESTED:
+*.h, *.cc
+
+SCRIPT:
+Script started on Mon 02 Dec 2013 10:03:10 PM EST
+1%>linux028:~/cs343/a6/cs343-a6> ./soda soda.config
+Parent  WATOFF  Names Truck Plant Stud0 Stud1 Mach0 Mach1 Mach2 Cour0
+******* ******* ******* ******* ******* ******* ******* ******* ******* ******* *******
+S S S               S
+D0,1    R0          S2
+D0,1    R1            S2
+D1,1    R2    S         S2
+  C0,5  N0,0    G S2,4
+D1,1  W   S   V0  S2,4        t0,5
+D1,2  C1,5  N0,1      V1          T0,5
+D1,2  W                 t1,5
+    N1,1        V1        T1,5
+D0,3    N1,2        V2
+    N0,2  P4    V2
+      d0,4
+      U0,16
+D1,3      D0,0  P
+D0,3    N1,0    G   V0  r
+D0,1      P8
+      d0,8
+      U0,8
+D1,2      D0,0  P
+      d1,0  G     r
+      U1,20
+D0,3    N0,0  D1,0    V0    R r
+D0,1          B3    B2,1
+D1,3          B1    B2,0
+D1,3      P5
+    N1,1  d0,5  P   V1
+D1,2      U0,5  G
+D0,3      D0,0        r
+      d1,0
+      U1,20
+D1,1  T0,7    D1,0        R r
+D1,3  W                 t0,7
+D0,2      P10             T0,7
+      d0,10
+      D0,5  P
+D1,3      d1,5  G     r
+      U1,15
+D0,3      D1,0        R r
+      P10   B6    B2,4
+D0,1      d0,10 P
+D1,2      D0,9  G     r
+      d1,9
+      U1,6
+D0,1      D1,0        R r
+      d2,0    B4    B2,4
+      U2,20
+      D2,0
+... ... ... ... ... F ... ... ... ... ...
+D1,1                R r
+D1,3      P6      B3    B2,1
+      d0,6
+      U0,0
+      D0,5  P
+D0,2      d1,5  G     r
+      U1,4
+D1,1      D1,2        R r
+      d2,2
+      U2,18
+D0,3      D2,0          R r
+D1,1      P5      B1    B2,0
+      d0,5
+      U0,0
+D1,2      D0,5  P
+      d1,5  G     r
+      U1,3
+D0,2      D1,3        R r
+      d2,3
+      U2,15
+D1,1      D2,0          R r
+D1,3  T1,7                R
+D0,3  W                 t1,7
+      P8      B6    B2,1    T1,7
+      d0,8
+      U0,0
+D0,1      D0,8  P
+      d1,8  G     r
+      U1,1
+D1,2      D1,5        R r
+      d2,5
+      U2,13
+D0,1      D2,3          R r
+D1,1      P6            R
+      d0,6
+      U0,0
+      D0,6  P   B4    B2,3
+D0,2        G     r
+... ... ... ... ... ... F ... ... ... ...
+      d1,6
+      U1,0
+D1,1      D1,4        R r
+      d2,4
+      U2,10
+D0,1      D2,1          R r
+D1,3                  R
+D1,3
+D1,2
+... ... ... F ... ... ... ... ... ... ...
+
+... ... ... ... F ... ... ... ... ... ...
+D1,2
+... ... ... ... ... ... ... F ... ... ...
+D1,2
+... ... ... ... ... ... ... ... F ... ...
+D0,2
+... ... ... ... ... ... ... ... ... F ...
+D1,3
+... ... F ... ... ... ... ... ... ... ...
+D1,1
+D0,2
+... ... ... ... ... ... ... ... ... ... F
+
+... F ... ... ... ... ... ... ... ... ...
+D0,2
+F ... ... ... ... ... ... ... ... ... ...
+***********************
+1%>linux028:~/cs343/a6/cs343-a6> exit
+exit
+Script done on Mon 02 Dec 2013 10:05:18 PM EST
+
+ANALYSIS:
+We can talk through the code to see that the various students are able to buy, there are some watcards that are lost,
+and the general functionality of the vending machines is being supplied by the trucks. Likewise, the production occurs
+within the bottling plant. In short, the "correctness" of the output is similar to the sample solution, the code
+executes and terminates.
+
+TEST 6: ONE VENDING MACHINE WITH MANY STUDENTS
 ------
 DESCRIPTION: Ensure one vending machine can handle lots of student requests
 
@@ -217,7 +357,6 @@ CODE TESTED:
 student.cc, vendingmachine.cc
 
 SCRIPT:
-
 Script started on Thu 28 Nov 2013 06:45:40 PM EST
 1%>linux024:~/cs343/a6> cat soda.config
 SodaCost                     2
@@ -239,7 +378,7 @@ In order to save space, the output was sent to a file.  By tracing through the o
 students got turns to make a purchase from the vending machine, and all entities terminated gracefully.
 
 
-TEST 6: Many vending machines to one student
+TEST 7: MANY VENDING MACHINES WITH ONE STUDENT
 -------
 DESCRIPTION: Ensure the combination of one student and many vending machines successfully terminates.
 
@@ -295,7 +434,7 @@ purchases, however, were from the same vending machine.  This was expected, as t
 getting restocked, therefore never running out of the students favourite flavour.
 
 
-TEST 7: Many vending machines + students to one courier
+TEST 8: MANY VENDING MACHINES, STUDENTS WITH ONE COURIER
 -------
 DESCRIPTION: Here, we bottleneck on the courier and confirm that many students with many vending machine does not lead
 to a case where starvation prevents the program from finishing. This test also serves as an initial regression test of
@@ -334,7 +473,7 @@ constantly starved. Secondly, we can analyze that the vending machine, and stude
 simulation (w.r.t the re-supplying from the truck.
 
 
-TEST 8: Increased number of tasks, with an increase in purchases.
+TEST 9: HIGH # OF STUDENTS, VENDINGMACHINES, COURIERS
 ----------
 DESCRIPTION: This test serves as a regression based test, as it allows us to confirm and see program behaviour when
 large input sizes are specified for student, vending machine, etc. It also tests our program by running a “better”
